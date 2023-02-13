@@ -1,0 +1,149 @@
+
+body {
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    height: auto;
+}
+
+.box {
+    text-align: center;
+    justify-content: center;
+    border: 3px solid #666;
+    background-color: #ddd;
+    border-radius: .5em;
+    margin: 5px;
+    padding: 10px;
+    cursor: move;
+}
+
+.box:hover {
+    background-color: #bbb;
+}
+
+.header-bar {
+    width: auto;
+    min-height: 15%;
+    background-color: lightgray;
+    border: solid 3px gray;
+}
+
+.header-logo {
+    width: 50px;
+    height: 50px;
+    margin: 2px;
+}
+
+.header-btn {
+    padding: 5px 10px 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.development {
+    width: 100%;
+    min-height: 400px;
+    margin: 0;
+}
+
+.side-bar {
+    flex-direction: column;
+    border: solid 3px lightgray;
+    margin: 5px 0 5px 5px;
+    width: 20%;
+    min-width: 15%;
+    min-height: 30%;
+}
+
+.code {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    border: solid 3px lightgray;
+    width: 80%;
+    min-width: fit-content;
+}
+
+.code-line {
+    min-width: min-content;
+    height: fit-content;
+    min-height: 70px;
+    margin: 2px;
+    padding: 10px;
+    border-top: solid 1px gray;
+    border-bottom: solid 1px gray;
+}
+
+.code-line.selected {
+    border: 3px dotted blue;
+}
+
+.code-obj {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #666;
+    background-color: #ddd;
+    border-radius: .5em;
+    margin: 0px 10px 0px 10px;
+    padding: 15px;
+    cursor: move;
+}
+
+.code-obj .text {
+    display: flex;
+    position: relative;
+    text-align: center;
+    pointer-events: none;
+    font-size: large;
+}
+
+.code-line.over, .rightDrop.over, .leftDrop.over {
+    border: 3px dotted #666;
+}
+
+.code-obj.selected {
+    border: 3px dotted blue;
+}
+
+.leftDrop {
+    height: 200%;
+    margin-left: -20px !important;
+    width: 15px;
+    min-width: 15px !important;
+}
+
+.rightDrop {
+    height: 200%;
+    margin-right: -20px !important;
+    width: 15px;
+    min-width: 15px !important;
+}
+
+.line-toolbar {
+    min-width: 100%;
+    margin-bottom: 2px;
+    max-height: 50px;
+    align-items: center;
+    background-color: lightgray;
+}
+
+.line-tool {
+    display: flex;
+    height: min-content;
+    width: 40px;
+    align-items: center;
+    margin: 5px;
+}
+
+.line-tool img {
+    height: auto;
+    width: 40px;
+    cursor: pointer;
+}
