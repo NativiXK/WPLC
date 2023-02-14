@@ -67,11 +67,12 @@ body {
 }
 
 .code-line {
+    position: relative;
     min-width: min-content;
     height: fit-content;
     min-height: 70px;
-    margin: 2px;
-    padding: 10px;
+    margin: 2px 5px 2px 2px;
+    padding: 10px 10px 10px 40px;
     border-top: solid 1px gray;
     border-bottom: solid 1px gray;
 }
@@ -80,18 +81,35 @@ body {
     border: 3px dotted blue;
 }
 
+.line-header {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4%;
+    max-width: 40px;
+    min-width: 25px;
+    height: 100%;
+    background-color: #666;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: large;
+}
+
 .code-obj {
+    position: relative;
     width: 40px;
     min-width: 40px;
     height: 40px;
     min-height: 40px;
-
     align-items: center;
     justify-content: center;
     border: 3px solid #666;
     background-color: #ddd;
     border-radius: .5em;
-    margin: 0px 10px 0px 10px;
+    margin: 5px 10px 5px 10px;
     padding: 15px;
     cursor: move;
 }
@@ -102,9 +120,10 @@ body {
     text-align: center;
     pointer-events: none;
     font-size: large;
+    padding: 10px;
 }
 
-.code-line.over, .rightDrop.over, .leftDrop.over {
+.code-line.over, .rightDrop.over, .leftDrop.over, .topDrop.over, .bottomDrop.over {
     border: 3px dotted #666;
 }
 
@@ -113,17 +132,35 @@ body {
 }
 
 .leftDrop {
-    height: 200%;
-    margin-left: -20px !important;
+    position: absolute;
+    height: 110%;
+    left: -10px !important;
     width: 15px;
     min-width: 15px !important;
 }
 
 .rightDrop {
-    height: 200%;
-    margin-right: -20px !important;
+    position: absolute;
+    height: 110%;
+    right: -10px !important;
     width: 15px;
     min-width: 15px !important;
+}
+
+.topDrop {
+    position: absolute;
+    width: 110%;
+    top: -10px !important;
+    height: 15px;
+    min-height: 15px !important;
+}
+
+.bottomDrop {
+    position: absolute;
+    width: 110%;
+    bottom: -10px !important;
+    height: 15px;
+    min-height: 15px !important;
 }
 
 .line-toolbar {

@@ -1,5 +1,7 @@
 // https://icon-icons.com/pt/pack/Basic-user-interface-vol-7/3812
 
+// const fs = require("fs");
+
 const toolbox = [
     "Aberto",
     "Fechado",
@@ -7,6 +9,50 @@ const toolbox = [
     "Pulso descida"
 ];
 
+/*
+Project cookie structure:
+
+cookie = {
+    'header' : ----> Holds the project info
+    {
+        'name' : ----,
+        'description' : ----,
+        'creationDate' : ----,
+    },
+
+    'toolboxes' : ----> Stores used plugins in the project
+    [
+        'default', -----> Built-in blocks, functions, contacts and coils
+
+    ],
+    
+    'global_const' : [],
+    'global_vars' : [],
+
+    'pages' : 
+    {
+        1 : {
+            'name' : ----,
+            'code' :
+            {
+                'local_const' : [],
+                'local_vars' : [],
+                'lines' : [
+                    0 : [
+                        def0
+                    ] #line
+                ] #lines
+            } #code
+        } #1
+
+    } #pages
+}
+
+
+*/
+
+
+codeJson = {}
 
 let sideBar;    // Barra lateral de ferramentas
 let codeHeader; // Barra de ferramentas de edição das linhas
@@ -49,18 +95,13 @@ function handleDragLeave(e) {
 
 function handleDrop(e) {
     e.stopPropagation(); // stops the browser from redirecting.
-    
-    // Inserindo objetos na linha
-    if (dragObj.classList.contains('tool') && e.target.classList.contains('code-line'))
-    {
-        let tool = e.dataTransfer.getData('text/html');
+    console.log(e);
 
-        e.target.append(setCodeObj(dragObj));
-        
-        dragObj = null;
-        return false;
+    // Salva posição de drop
+    if (e.target.classList.contains('code-line')) {
+
     }
-    
+
     // Reorganizando objetos na linha
     if (dragObj.classList.contains('code-obj'))
     {
@@ -78,23 +119,30 @@ function handleDrop(e) {
             e.target.append(dragObj);
         }
 
-        console.log(e.target);
     }
 
-    if (dragObj.classList.contains('tool') && e.target.parentElement.classList.contains('code-obj')) {
+    // Adicionando um novo objeto a partir da barra de ferramentas
+    if (dragObj.classList.contains('tool')) {
         
         let obj = e.dataTransfer.getData('text/html');
 
+        // Adicionado depois de um objeto
         if (e.target.classList.contains('rightDrop')) {
             e.target.parentElement.after(setCodeObj(dragObj));
         }
 
+        // Adicionado antes de um objeto
         if (e.target.classList.contains('leftDrop')) {
             e.target.parentElement.before(setCodeObj(dragObj));
         }
+
+        // Adicionado direto na linha
+        if (e.target.classList.contains('code-line')) {
+            e.target.append(setCodeObj(dragObj));
+        }
     }
-    // console.log(dragObj);
-    
+
+    dragObj = null;
 }
 
 function objClicked(e) {
@@ -131,6 +179,20 @@ function setCodeObj(tool) {
     leftDrop.addEventListener('dragleave', handleDragLeave);
     leftDrop.addEventListener('dragend', handleDragEnd);
 
+    let topDrop = document.createElement('div');
+    topDrop.draggable = false;
+    topDrop.className = 'topDrop';
+    topDrop.addEventListener('dragenter', handleDragEnter);
+    topDrop.addEventListener('dragleave', handleDragLeave);
+    topDrop.addEventListener('dragend', handleDragEnd);
+    
+    let bottomDrop = document.createElement('div');
+    bottomDrop.draggable = false;
+    bottomDrop.className = 'bottomDrop';
+    bottomDrop.addEventListener('dragenter', handleDragEnter);
+    bottomDrop.addEventListener('dragleave', handleDragLeave);
+    bottomDrop.addEventListener('dragend', handleDragEnd);
+
     let txt = document.createElement('div');
     txt.className = 'text';
     txt.innerHTML = tool.innerHTML;
@@ -138,8 +200,11 @@ function setCodeObj(tool) {
     let div = document.createElement('div');
     div.draggable = true;
     div.classList.add('container', 'code-obj');
+
     div.appendChild(leftDrop);
+    div.appendChild(topDrop);
     div.appendChild(txt);
+    div.appendChild(bottomDrop);
     div.appendChild(rightDrop);
     div.addEventListener('dragstart', handleDragStart);
     div.addEventListener('dragend', handleDragEnd);
@@ -164,15 +229,14 @@ function getParentLine(obj) {
 
 // Adiciona linha acima da selecionada
 function addLine(e) {
-    // "<div class=\"container code-line\" id=\"drop-target\"></div>"
     let div = document.createElement('div');
     div.className = 'container code-line';
-    div.id = 'drop-target';
     div.addEventListener('dragover', handleDragOver);
     div.addEventListener('dragenter', handleDragEnter);
     div.addEventListener('dragleave', handleDragLeave);
     div.addEventListener('drop', handleDrop);
     div.addEventListener('click', objClicked);
+    div.innerHTML += "<div class='line-header'> </div>"
 
     if (selectedObj) {
         selectedObj.parentElement.insertBefore(div, selectedObj);
@@ -181,6 +245,8 @@ function addLine(e) {
     {
         document.querySelector('.container.code').append(div);
     }
+
+    updateLineHeaders();
 }
 
 function removeLine(e) {
@@ -189,13 +255,43 @@ function removeLine(e) {
     }
 
     selectedObj = null;
+
+    updateLineHeaders();
 }
 
 function deleteObj(e) {
-    console.log('delete');
+    console.log(selectedObj.parentElement);
+}
+
+function updateLineHeaders() {
+    let lines = document.querySelectorAll('.line-header');
+    lines.forEach(function(item, index) {
+        item.innerHTML = index;
+        item.parentElement.id = "line-" + index;
+    });
+}
+
+function loadToolbox() {
+    let files = FileSystem.readdirSync();
+
+    files.forEach(function(file) {
+        console.log(file);
+    });
+
+    // let json = JSON.parse(fs.readFile('toolbox/default/default.json', function(err, data) {
+    //     res.writeHead(200, {'Content-Type': 'text/html'});
+    //     res.write(data);
+    //     res.end();
+    //     })
+    // );
+    return tools;
 }
 
 // Adiciona as ferramentas disponíveis na barra lateral
+
+
+// loadToolbox();
+
 sideBar = document.querySelector(".side-bar");
 toolbox.forEach(function(item) {
 
@@ -222,9 +318,7 @@ const lineTools = {
 };
 
 for(const [key, value] of Object.entries(lineTools)) {
-    console.log(key);
     tool  = document.querySelector(".line-tool." + key);
-    console.log(tool);
     tool.addEventListener('click', value);
 };
 

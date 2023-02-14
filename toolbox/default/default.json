@@ -1,0 +1,32 @@
+{
+    "tools" : [
+        {
+            "name" : "Aberto",
+            "properties" : {
+                "de" : "",
+                "para" : ""
+            }
+        },
+        {
+            "name" : "Fechado",
+            "properties" : {
+                "de" : "",
+                "para" : ""
+            }
+        },
+        {
+            "name" : "Pulso subida",
+            "properties" : {
+                "de" : "",
+                "para" : ""
+            }
+        },
+        {
+            "name" : "Pulso descida",
+            "properties" : {
+                "de" : "",
+                "para" : ""
+            }
+        }
+    ]
+}
