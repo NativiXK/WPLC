@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="src/style.css">
   </head>
   <body>
     <div class="container header-bar">
         <div class="container header-logo">
-            <img src="/logo.png" alt="logo" draggable="false">
+            <img src="src/imgs/logo.png" alt="logo" draggable="false">
         </div>
-        <button class="header-btn">File</button>
-        <button class="header-btn">View</button>
-        <button class="header-btn">Configurações</button>
+        <div class="header-btn">File</div>
+        <div class="header-btn">View</div>
+        <div class="header-btn">Configurações</div>
     </div>
 
     <div class="container development">
@@ -21,18 +21,19 @@
         <div class="container code">
           <div class="container line-toolbar">
             <div class="line-tool add">
-              <img src="utils/imgs/add.png" alt="Add line">
+              <img src="src/imgs/add.png" alt="Add line">
             </div>
             <div class="line-tool remove">
-              <img src="utils/imgs/remove.png" alt="remove line">
+              <img src="src/imgs/remove.png" alt="remove line">
             </div>
             <div class="line-tool delete">
-              <img src="utils/imgs/delete.png" alt="remove object">
+              <img src="src/imgs/delete.png" alt="remove object">
             </div>
           </div> <!-- line-toolbar -->
 
         </div> <!-- code -->
     </div> <!-- development -->
   </body>
-  <script src="script.js"></script>
+  <script type="module" src="./src/modules/project.js"></script>
+  <script type="module" src="src/main.js"></script>
 </html>

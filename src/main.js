@@ -1,6 +1,6 @@
 // https://icon-icons.com/pt/pack/Basic-user-interface-vol-7/3812
 
-// const fs = require("fs");
+import * as IDE from "./modules/IDE.js";
 
 const toolbox = [
     "Aberto",
@@ -9,50 +9,7 @@ const toolbox = [
     "Pulso descida"
 ];
 
-/*
-Project cookie structure:
-
-cookie = {
-    'header' : ----> Holds the project info
-    {
-        'name' : ----,
-        'description' : ----,
-        'creationDate' : ----,
-    },
-
-    'toolboxes' : ----> Stores used plugins in the project
-    [
-        'default', -----> Built-in blocks, functions, contacts and coils
-
-    ],
-    
-    'global_const' : [],
-    'global_vars' : [],
-
-    'pages' : 
-    {
-        1 : {
-            'name' : ----,
-            'code' :
-            {
-                'local_const' : [],
-                'local_vars' : [],
-                'lines' : [
-                    0 : [
-                        def0
-                    ] #line
-                ] #lines
-            } #code
-        } #1
-
-    } #pages
-}
-
-
-*/
-
-
-codeJson = {}
+let ide = new IDE.Controller();
 
 let sideBar;    // Barra lateral de ferramentas
 let codeHeader; // Barra de ferramentas de edição das linhas
@@ -95,13 +52,19 @@ function handleDragLeave(e) {
 
 function handleDrop(e) {
     e.stopPropagation(); // stops the browser from redirecting.
-    console.log(e);
+    
+    // Busca a linha de código usada
+    let line = getParentLine(e.target);
+    line.getBoundingClientRect();
 
     // Salva posição de drop
     if (e.target.classList.contains('code-line')) {
 
     }
 
+
+
+    /*
     // Reorganizando objetos na linha
     if (dragObj.classList.contains('code-obj'))
     {
@@ -128,12 +91,18 @@ function handleDrop(e) {
 
         // Adicionado depois de um objeto
         if (e.target.classList.contains('rightDrop')) {
-            e.target.parentElement.after(setCodeObj(dragObj));
+
+            let tool = setCodeObj(dragObj);
+
+            e.target.parentElement.after(tool);
         }
 
         // Adicionado antes de um objeto
         if (e.target.classList.contains('leftDrop')) {
-            e.target.parentElement.before(setCodeObj(dragObj));
+
+            let tool = setCodeObj(dragObj);
+
+            e.target.parentElement.before(tool);
         }
 
         // Adicionado direto na linha
@@ -141,6 +110,7 @@ function handleDrop(e) {
             e.target.append(setCodeObj(dragObj));
         }
     }
+    */
 
     dragObj = null;
 }
@@ -221,14 +191,24 @@ function setCodeObj(tool) {
 }
 
 function getParentLine(obj) {
-    if (obj.parentElement.classList.contains('code-line')) {
-        return obj.parentElement;
+    
+    if (obj == null) {
+        return null;
     }
+    
+    if (obj.classList.contains('code-line')) {
+        return obj;
+    }
+    
+    return getParentLine(obj.parentElement);
 
 }
 
 // Adiciona linha acima da selecionada
 function addLine(e) {
+    let canvas = document.createElement('canvas');
+    canvas.className = "line-canvas";
+
     let div = document.createElement('div');
     div.className = 'container code-line';
     div.addEventListener('dragover', handleDragOver);
@@ -236,9 +216,11 @@ function addLine(e) {
     div.addEventListener('dragleave', handleDragLeave);
     div.addEventListener('drop', handleDrop);
     div.addEventListener('click', objClicked);
+    div.append(canvas);
     div.innerHTML += "<div class='line-header'> </div>"
 
-    if (selectedObj) {
+    // Não permite adicionar linha dentro da linha quando o objeto selecionado é uma ferramenta
+    if (selectedObj && selectedObj.classList.contains("obj")) {
         selectedObj.parentElement.insertBefore(div, selectedObj);
     }
     else
@@ -288,10 +270,6 @@ function loadToolbox() {
 }
 
 // Adiciona as ferramentas disponíveis na barra lateral
-
-
-// loadToolbox();
-
 sideBar = document.querySelector(".side-bar");
 toolbox.forEach(function(item) {
 
@@ -311,14 +289,14 @@ codeTools.forEach(function(item) {
 
 // Adiciona ferramentas de edição das linhas
 // Ferramentas de edição e manuseio das linhas de código
-const lineTools = {
-    "add"   : addLine,
-    "remove": removeLine,
-    "delete": deleteObj,
-};
+// const lineTools = {
+//     "add"   : addLine,
+//     "remove": removeLine,
+//     "delete": deleteObj,
+// };
 
-for(const [key, value] of Object.entries(lineTools)) {
-    tool  = document.querySelector(".line-tool." + key);
+for(const [key, value] of Object.entries(ide.lineTools)) {
+    let tool  = document.querySelector(".line-tool." + key);
     tool.addEventListener('click', value);
 };
 
