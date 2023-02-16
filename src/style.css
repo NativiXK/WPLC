@@ -1,6 +1,8 @@
 
 body {
     margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    user-select: none;
 }
 
 .container {
@@ -60,7 +62,7 @@ body {
     transition: 0.3s;
 }
 
-.development {
+.project {
     width: 100%;
     min-height: 400px;
     margin: 0;
@@ -75,12 +77,64 @@ body {
     min-height: 30%;
 }
 
+.pages {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 5px;
+}
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+    max-height: fit-content;
+    width: fit-content;
+}
+
+.tab-title {
+    display: flex;
+    height: 100%;
+    width: fit-content;
+    height: 25px;
+    padding: 5px 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+    background-color: #bbb;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+}
+
+.tab-title:hover{
+    background-color: lightgray;
+    border-left: solid 5px gray;
+}
+
+.tab-title.open {
+    background-color: lightgray;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: min-content;
+    height: 100%;
+    position: relative;
+    border: solid 3px lightgray;
+    transition: 5s ease;
+}
+
+.page.hide {
+    height: 0;
+    border: none;
+    display: none;
+}
+
 .code {
     display: flex;
     flex-direction: column;
-    margin: 5px;
-    border: solid 3px lightgray;
-    width: 80%;
+    width: 100%;
     min-width: fit-content;
 }
 
@@ -113,7 +167,6 @@ body {
     color: white;
     justify-content: center;
     align-items: center;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: large;
 }
 

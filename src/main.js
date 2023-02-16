@@ -21,7 +21,7 @@ let selectedObj = null;
 function handleDragStart(e) {
     this.style.opacity = '1';
 
-    dragObj = this;
+    ide.draggedObj = this;
 
     e.dataTransfer.effectAllowed = 'copy';
     e.dataTransfer.setData('text/html', this.outerHTML);
@@ -128,7 +128,7 @@ function objClicked(e) {
         }
     );
 
-    selectedObj = e.target;
+    ide.selectedObj = e.target;
 
     // Não permite propagar evento para elementos abaixo deste elemento
     e.stopPropagation();
@@ -253,21 +253,6 @@ function updateLineHeaders() {
     });
 }
 
-function loadToolbox() {
-    let files = FileSystem.readdirSync();
-
-    files.forEach(function(file) {
-        console.log(file);
-    });
-
-    // let json = JSON.parse(fs.readFile('toolbox/default/default.json', function(err, data) {
-    //     res.writeHead(200, {'Content-Type': 'text/html'});
-    //     res.write(data);
-    //     res.end();
-    //     })
-    // );
-    return tools;
-}
 
 // Adiciona as ferramentas disponíveis na barra lateral
 sideBar = document.querySelector(".side-bar");
@@ -287,24 +272,25 @@ codeTools.forEach(function(item) {
     item.addEventListener('dragend', handleDragEnd);
 });
 
-// Adiciona ferramentas de edição das linhas
-// Ferramentas de edição e manuseio das linhas de código
-// const lineTools = {
-//     "add"   : addLine,
-//     "remove": removeLine,
-//     "delete": deleteObj,
-// };
-
 for(const [key, value] of Object.entries(ide.lineTools)) {
     let tool  = document.querySelector(".line-tool." + key);
     tool.addEventListener('click', value);
 };
 
-document.body.addEventListener('click', function(e) {
-    if (selectedObj) {
-        selectedObj.classList.remove('selected');
+
+ide.renderIDE();
+
+// Adiciona eventos nas tabs das páginas
+document.querySelectorAll('.tab-title').forEach(
+    function(item, index) {
+        if (index === 0) {
+            item.classList.add('open');
+        }
+        item.addEventListener('click', function(e) {ide.openPage(e)});
     }
-    selectedObj = null;
-});
+)
+
+ide.newProject();
+console.log(JSON.stringify(ide.project));
 
 addLine();
