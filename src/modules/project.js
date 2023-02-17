@@ -14,8 +14,8 @@ class Project {
 
     createElement() {
         let div = document.createElement('div');
-
-
+        div.className = 'container project';
+        
         return div;
     }
 

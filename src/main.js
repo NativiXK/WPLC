@@ -290,7 +290,4 @@ document.querySelectorAll('.tab-title').forEach(
     }
 )
 
-ide.newProject();
-console.log(JSON.stringify(ide.project));
-
 addLine();
